@@ -7,10 +7,11 @@ import { cn } from "@/utils/cn";
 import { AuthContext } from "@/App";
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const navigationItems = [
+const navigationItems = [
     { to: "/", icon: "LayoutDashboard", label: "Dashboard" },
     { to: "/transactions", icon: "Receipt", label: "Transactions" },
     { to: "/budget", icon: "PieChart", label: "Budget" },
+    { to: "/accounts", icon: "Building2", label: "Bank Accounts" },
     { to: "/goals", icon: "Target", label: "Goals" },
     { to: "/reports", icon: "BarChart3", label: "Reports" }
   ];
