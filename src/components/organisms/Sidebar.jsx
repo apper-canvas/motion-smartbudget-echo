@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import NavigationItem from "@/components/molecules/NavigationItem";
 import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
 import { cn } from "@/utils/cn";
+import { AuthContext } from "@/App";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const navigationItems = [
@@ -43,17 +46,9 @@ const Sidebar = ({ isOpen, onClose }) => {
             ))}
           </nav>
 
-          <div className="p-4 border-t border-slate-200">
+<div className="p-4 border-t border-slate-200">
             <div className="p-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border border-slate-200">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
-                  <ApperIcon name="User" className="w-4 h-4 text-white" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">John Doe</p>
-                  <p className="text-xs text-slate-500">Premium User</p>
-                </div>
-              </div>
+              <UserInfo />
             </div>
           </div>
         </div>
@@ -103,23 +98,53 @@ const Sidebar = ({ isOpen, onClose }) => {
               ))}
             </nav>
 
-            <div className="p-4 border-t border-slate-200">
+<div className="p-4 border-t border-slate-200">
               <div className="p-3 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg">
-                <div className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
-                    <ApperIcon name="User" className="w-3 h-3 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-900">John Doe</p>
-                    <p className="text-xs text-slate-500">Premium User</p>
-                  </div>
-                </div>
+                <UserInfo mobile />
               </div>
             </div>
           </div>
         </div>
       </div>
     </>
+  );
+};
+
+// User info component for both desktop and mobile
+const UserInfo = ({ mobile }) => {
+  const { user } = useSelector((state) => state.user);
+  const { logout } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    await logout();
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className={cn("flex items-center", mobile ? "space-x-2" : "space-x-3")}>
+        <div className={cn(
+          "bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center",
+          mobile ? "w-6 h-6" : "w-8 h-8"
+        )}>
+          <ApperIcon name="User" className={cn("text-white", mobile ? "w-3 h-3" : "w-4 h-4")} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className={cn("font-medium text-slate-900 truncate", mobile ? "text-sm" : "text-sm")}>
+            {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.emailAddress || 'User'}
+          </p>
+          <p className="text-xs text-slate-500">SmartBudget User</p>
+        </div>
+      </div>
+      <Button
+        size="sm"
+        variant="secondary"
+        onClick={handleLogout}
+        className="w-full flex items-center justify-center space-x-2 text-slate-600 hover:text-slate-800"
+      >
+        <ApperIcon name="LogOut" className="w-4 h-4" />
+        <span>Logout</span>
+      </Button>
+    </div>
   );
 };
 
