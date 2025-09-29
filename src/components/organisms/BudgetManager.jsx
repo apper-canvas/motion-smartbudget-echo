@@ -21,7 +21,6 @@ const BudgetManager = () => {
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-title: "",
     category: "",
     monthlyLimit: ""
   });
@@ -55,7 +54,7 @@ title: "",
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-if (!formData.title || !formData.category || !formData.monthlyLimit) {
+    if (!formData.category || !formData.monthlyLimit) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -71,7 +70,6 @@ if (!formData.title || !formData.category || !formData.monthlyLimit) {
       const [year, month] = currentMonth.split("-");
       
       await budgetService.upsertBudget(
-formData.title,
         formData.category,
         limit,
         currentMonth,
@@ -79,7 +77,7 @@ formData.title,
       );
       
       toast.success("Budget saved successfully");
-setFormData({ title: "", category: "", monthlyLimit: "" });
+      setFormData({ category: "", monthlyLimit: "" });
       setShowForm(false);
       await loadData();
     } catch (error) {
@@ -128,44 +126,33 @@ setFormData({ title: "", category: "", monthlyLimit: "" });
         {showForm && (
           <div className="mb-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
             <form onSubmit={handleSubmit} className="space-y-4">
-<div className="grid grid-cols-1 gap-4">
-                <FormField label="Title">
-                  <Input
-                    type="text"
-                    placeholder="Enter budget title..."
-                    value={formData.title}
-                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                  />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField label="Category">
+                  <Select
+                    value={formData.category}
+                    onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+                  >
+                    <option value="">Select category...</option>
+                    {categories
+                      .filter(cat => !budgets.find(b => b.category === cat.name))
+                      .map(category => (
+                        <option key={category.Id} value={category.name}>
+                          {category.name}
+                        </option>
+                      ))
+                    }
+                  </Select>
                 </FormField>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField label="Category">
-                    <Select
-                      value={formData.category}
-                      onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                    >
-                      <option value="">Select category...</option>
-                      {categories
-                        .filter(cat => !budgets.find(b => b.category === cat.name))
-                        .map(category => (
-                          <option key={category.Id} value={category.name}>
-                            {category.name}
-                          </option>
-                        ))
-                      }
-                    </Select>
-                  </FormField>
-
-                  <FormField label="Monthly Limit">
-                    <Input
-                      type="number"
-                      step="0.01"
-                      placeholder="0.00"
-                      value={formData.monthlyLimit}
-                      onChange={(e) => setFormData(prev => ({ ...prev, monthlyLimit: e.target.value }))}
-                    />
-                  </FormField>
-                </div>
+                <FormField label="Monthly Limit">
+                  <Input
+                    type="number"
+                    step="0.01"
+                    placeholder="0.00"
+                    value={formData.monthlyLimit}
+                    onChange={(e) => setFormData(prev => ({ ...prev, monthlyLimit: e.target.value }))}
+                  />
+                </FormField>
               </div>
               
               <div className="flex justify-end">
@@ -202,7 +189,7 @@ setFormData({ title: "", category: "", monthlyLimit: "" });
               <Card key={budget.Id} className="p-6">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-<h3 className="text-lg font-semibold text-slate-900">{budget.title || budget.category}</h3>
+                    <h3 className="text-lg font-semibold text-slate-900">{budget.category}</h3>
                     <div className="text-right">
                       <p className="text-sm text-slate-600">
                         {formatCurrency(spent)} of {formatCurrency(budget.monthlyLimit)}

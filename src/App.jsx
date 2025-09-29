@@ -18,7 +18,6 @@ import Dashboard from "@/components/pages/Dashboard";
 import Budget from "@/components/pages/Budget";
 import Transactions from "@/components/pages/Transactions";
 import Goals from "@/components/pages/Goals";
-import BankAccounts from "@/components/pages/BankAccounts";
 
 // Create auth context
 export const AuthContext = createContext(null);
@@ -138,7 +137,6 @@ function AppContent() {
             <Route path="transactions" element={<Transactions />} />
             <Route path="budget" element={<Budget />} />
             <Route path="goals" element={<Goals />} />
-<Route path="bank-accounts" element={<BankAccounts />} />
             <Route path="reports" element={<Reports />} />
           </Route>
           <Route path="*" element={<NotFound />} />

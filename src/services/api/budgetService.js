@@ -1,5 +1,4 @@
 import { toast } from "react-toastify";
-import React from "react";
 
 export const budgetService = {
   async getAll() {
@@ -13,8 +12,7 @@ export const budgetService = {
       const params = {
         fields: [
           {"field": {"Name": "Id"}},
-{"field": {"Name": "Name"}},
-          {"field": {"Name": "title_c"}},
+          {"field": {"Name": "Name"}},
           {"field": {"Name": "category_c"}},
           {"field": {"Name": "monthly_limit_c"}},
           {"field": {"Name": "month_c"}},
@@ -30,9 +28,8 @@ export const budgetService = {
         return [];
       }
 
-return response.data?.map(budget => ({
+      return response.data?.map(budget => ({
         Id: budget.Id,
-        title: budget.title_c,
         category: budget.category_c,
         monthlyLimit: budget.monthly_limit_c,
         month: budget.month_c,
@@ -55,8 +52,7 @@ return response.data?.map(budget => ({
       const params = {
         fields: [
           {"field": {"Name": "Id"}},
-{"field": {"Name": "Name"}},
-          {"field": {"Name": "title_c"}},
+          {"field": {"Name": "Name"}},
           {"field": {"Name": "category_c"}},
           {"field": {"Name": "monthly_limit_c"}},
           {"field": {"Name": "month_c"}},
@@ -73,7 +69,6 @@ return response.data?.map(budget => ({
       const budget = response.data;
       return {
         Id: budget.Id,
-title: budget.title_c,
         category: budget.category_c,
         monthlyLimit: budget.monthly_limit_c,
         month: budget.month_c,
@@ -95,8 +90,7 @@ title: budget.title_c,
 
       const params = {
         records: [{
-Name: budgetData.title || `${budgetData.category} Budget`,
-          title_c: budgetData.title,
+          Name: `${budgetData.category} Budget`,
           category_c: budgetData.category,
           monthly_limit_c: budgetData.monthlyLimit,
           month_c: budgetData.month,
@@ -128,7 +122,6 @@ Name: budgetData.title || `${budgetData.category} Budget`,
           const created = successful[0].data;
           return {
             Id: created.Id,
-title: created.title_c,
             category: created.category_c,
             monthlyLimit: created.monthly_limit_c,
             month: created.month_c,
@@ -152,10 +145,9 @@ title: created.title_c,
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
 
-const params = {
+      const params = {
         records: [{
-Id: parseInt(id),
-          title_c: budgetData.title,
+          Id: parseInt(id),
           Name: `${budgetData.category} Budget`,
           category_c: budgetData.category,
           monthly_limit_c: budgetData.monthlyLimit,
@@ -186,9 +178,8 @@ Id: parseInt(id),
 
         if (successful.length > 0) {
           const updated = successful[0].data;
-return {
+          return {
             Id: updated.Id,
-            title: updated.title_c,
             category: updated.category_c,
             monthlyLimit: updated.monthly_limit_c,
             month: updated.month_c,
@@ -255,8 +246,7 @@ return {
       const params = {
         fields: [
           {"field": {"Name": "Id"}},
-{"field": {"Name": "Name"}},
-          {"field": {"Name": "title_c"}},
+          {"field": {"Name": "Name"}},
           {"field": {"Name": "category_c"}},
           {"field": {"Name": "monthly_limit_c"}},
           {"field": {"Name": "month_c"}},
@@ -275,8 +265,7 @@ return {
       }
 
       return response.data?.map(budget => ({
-Id: budget.Id,
-        title: budget.title_c,
+        Id: budget.Id,
         category: budget.category_c,
         monthlyLimit: budget.monthly_limit_c,
         month: budget.month_c,
@@ -288,7 +277,7 @@ Id: budget.Id,
     }
   },
 
-async upsertBudget(title, category, monthlyLimit, month, year) {
+  async upsertBudget(category, monthlyLimit, month, year) {
     try {
       const { ApperClient } = window.ApperSDK;
       const apperClient = new ApperClient({
@@ -299,8 +288,7 @@ async upsertBudget(title, category, monthlyLimit, month, year) {
       // First, try to find existing budget
       const searchParams = {
         fields: [
-{"field": {"Name": "Id"}},
-          {"field": {"Name": "title_c"}},
+          {"field": {"Name": "Id"}},
           {"field": {"Name": "category_c"}},
           {"field": {"Name": "monthly_limit_c"}},
           {"field": {"Name": "month_c"}},
@@ -321,8 +309,7 @@ async upsertBudget(title, category, monthlyLimit, month, year) {
         const updateParams = {
           records: [{
             Id: existingBudget.Id,
-Name: title || `${category} Budget`,
-            title_c: title,
+            Name: `${category} Budget`,
             category_c: category,
             monthly_limit_c: monthlyLimit,
             month_c: month,
@@ -342,7 +329,6 @@ Name: title || `${category} Budget`,
           const updated = updateResponse.results[0].data;
           return {
             Id: updated.Id,
-title: updated.title_c,
             category: updated.category_c,
             monthlyLimit: updated.monthly_limit_c,
             month: updated.month_c,
@@ -353,8 +339,7 @@ title: updated.title_c,
         // Create new budget
         const createParams = {
           records: [{
-Name: title || `${category} Budget`,
-            title_c: title,
+            Name: `${category} Budget`,
             category_c: category,
             monthly_limit_c: monthlyLimit,
             month_c: month,
@@ -374,7 +359,6 @@ Name: title || `${category} Budget`,
           const created = createResponse.results[0].data;
           return {
             Id: created.Id,
-title: created.title_c,
             category: created.category_c,
             monthlyLimit: created.monthly_limit_c,
             month: created.month_c,
