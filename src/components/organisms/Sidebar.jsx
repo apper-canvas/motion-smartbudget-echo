@@ -9,6 +9,7 @@ import Button from "@/components/atoms/Button";
 import NavigationItem from "@/components/molecules/NavigationItem";
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const { logout } = useContext(AuthContext);
   const location = useLocation();
 
   const navigationItems = [
@@ -76,11 +77,15 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             </nav>
 
-            {/* Footer */}
+{/* Footer */}
             <div className="p-4 border-t border-slate-200/50">
-              <p className="text-xs text-slate-400 text-center">
-                © 2024 SmartBudget. All rights reserved.
-              </p>
+              <button
+                onClick={logout}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
+              >
+                <ApperIcon name="LogOut" className="w-4 h-4" />
+                Logout
+              </button>
             </div>
           </motion.aside>
         </>
